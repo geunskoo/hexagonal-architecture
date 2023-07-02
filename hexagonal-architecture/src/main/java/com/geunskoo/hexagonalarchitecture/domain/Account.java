@@ -1,5 +1,6 @@
 package com.geunskoo.hexagonalarchitecture.domain;
 
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,14 +14,17 @@ public class Account {
     private Money baselineBalance;
     private ActivityWindow activityWindow;
 
-    public Account withId(AccountId id, Money baselineBalance, ActivityWindow activityWindow) {
+    public static Account withId(AccountId id, Money baselineBalance, ActivityWindow activityWindow) {
         return new Account(id, baselineBalance, activityWindow);
     }
 
-    public Account withoutId(Money baselineBalance, ActivityWindow activityWindow) {
+    public static Account withoutId(Money baselineBalance, ActivityWindow activityWindow) {
         return new Account(null, baselineBalance, activityWindow);
     }
 
+    public Optional<AccountId> getId() {
+        return Optional.ofNullable(this.id);
+    }
 
     @Value
     public class AccountId {
