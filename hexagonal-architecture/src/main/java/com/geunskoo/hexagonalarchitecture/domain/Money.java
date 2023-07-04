@@ -2,9 +2,7 @@ package com.geunskoo.hexagonalarchitecture.domain;
 
 import java.math.BigInteger;
 import lombok.NonNull;
-import lombok.Value;
 
-@Value
 public record Money(@NonNull BigInteger amount) {
 
     public static Money ZERO = Money.of(0L);
