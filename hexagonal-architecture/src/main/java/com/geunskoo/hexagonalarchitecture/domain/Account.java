@@ -52,7 +52,7 @@ public class Account {
     }
 
     @Value
-    public class AccountId {
+    public static class AccountId {
 
         private Long value;
     }
