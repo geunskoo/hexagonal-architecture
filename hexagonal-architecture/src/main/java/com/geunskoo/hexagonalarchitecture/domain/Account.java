@@ -1,5 +1,6 @@
 package com.geunskoo.hexagonalarchitecture.domain;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,30 @@ public class Account {
 
     public Optional<AccountId> getId() {
         return Optional.ofNullable(this.id);
+    }
+
+    public boolean withdraw(Money money, AccountId targetAccountId) {
+        if (!mayWithdraw(money)) {
+            return false;
+        }
+        Activity withdrawal = new Activity(this.id, this.id, targetAccountId, LocalDateTime.now(), money);
+        this.activityWindow.addActivity(withdrawal);
+        return true;
+    }
+
+    public boolean deposit(Money money, AccountId sourceAccountId) {
+        Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
+        this.activityWindow.addActivity(deposit);
+        return true;
+    }
+
+    public Money calculateBalance() {
+        return Money.add(this.baselineBalance, this.activityWindow.calculateBalance(this.id));
+    }
+
+    private boolean mayWithdraw(Money money) {
+        return Money.add(this.calculateBalance(), money.negate())
+            .isPositiveOrZero();
     }
 
     @Value
