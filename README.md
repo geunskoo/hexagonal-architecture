@@ -1,9 +1,8 @@
 # hexagonal-architecture
+
 ![헥사고날 아키텍처](https://github.com/geunskoo/hexagonal-architecture/assets/97498405/195c1c99-d9bb-47e4-bd51-d50e0046060e)
 
-[참고] 톰 홈버그. 『클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션 』. 위키북스, 2021.11.26
-
-## 📖 이 책을 선정하게된 이유
+## 📖[클린아키텍처] 책을 선정하게된 이유
 
  신세계 아이앤씨, Spharos Academy 교육 과정 중 2차 프로젝트로 MSA를 기반의 플랫폼 서비스를 만드는 미션을 받았다.
 MSA로 서비스를 기획하기 위해서, 이벤트 스토밍을 진행하였다.
@@ -35,3 +34,7 @@ MSA 자체가 클라우드 환경이었고, 클라우드 환경은 유연하게 
 3. 헥사고날 아키텍처의 테스트코드 작성 요령법 익혀보기.
 4. 야생형으로 스스로 만든 나의 헥사고날과 책에서 말하는 헥사고날을 차이 공부하기.
 5. 나의 궁금점들이 얼마나 해결되고 있는지 체크하기.
+
+## 참고
+[참고] 톰 홈버그. 『클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션 』. 위키북스, 2021.11.26
+[DDD, Hexagonal](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
