@@ -27,6 +27,7 @@ public class Account {
         return Optional.ofNullable(this.id);
     }
 
+    //인출 하기
     public boolean withdraw(Money money, AccountId targetAccountId) {
         if (!mayWithdraw(money)) {
             return false;
@@ -36,12 +37,14 @@ public class Account {
         return true;
     }
 
+    //예금 하기
     public boolean deposit(Money money, AccountId sourceAccountId) {
         Activity deposit = new Activity(this.id, sourceAccountId, this.id, LocalDateTime.now(), money);
         this.activityWindow.addActivity(deposit);
         return true;
     }
 
+    //잔액 계산
     public Money calculateBalance() {
         return Money.add(this.baselineBalance, this.activityWindow.calculateBalance(this.id));
     }
