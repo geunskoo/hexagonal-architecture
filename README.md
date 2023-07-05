@@ -37,4 +37,5 @@ MSA 자체가 클라우드 환경이었고, 클라우드 환경은 유연하게 
 
 ## 참고
 [참고] 톰 홈버그. 『클린 아키텍처: 자바 코드로 구현하는 클린 웹 애플리케이션 』. 위키북스, 2021.11.26
+
 [DDD, Hexagonal](https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/)
