@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("계좌 테스트")
+@DisplayName("Account Domain TEST")
 class AccountTest {
 
     @Nested
