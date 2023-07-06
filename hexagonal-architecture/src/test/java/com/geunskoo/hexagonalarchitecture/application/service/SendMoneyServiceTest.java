@@ -15,10 +15,13 @@ import com.geunskoo.hexagonalarchitecture.domain.Account;
 import com.geunskoo.hexagonalarchitecture.domain.Account.AccountId;
 import com.geunskoo.hexagonalarchitecture.domain.Money;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 @DisplayName("SendMoney UseCase TEST")
@@ -62,9 +65,62 @@ class SendMoneyServiceTest {
             then(accountLock).should(times(0)).lockAccount(eq(targetAccountId));
         }
 
+        @Test
+        @DisplayName("송금하기 유스케이스 성공 테스트")
+        void transactionSucceed() {
+            //given
+            Account sourceAccount = givenSourceAccount();
+            Account targetAccount = givenTargetAccount();
+
+            givenWithdrawalWithSucceed(sourceAccount);
+            givenDepositWillSucceed(targetAccount);
+
+            Money money = Money.of(500L);
+
+            //when
+            SendMoneyCommand command = new SendMoneyCommand(sourceAccount.getId().get(), targetAccount.getId().get(), money);
+            boolean success = sendMoneyService.sendMoney(command);
+
+            //then
+            assertThat(success).isTrue();
+
+            AccountId sourceAccountId = sourceAccount.getId().get();
+            AccountId targetAccountId = targetAccount.getId().get();
+
+            then(accountLock).should().lockAccount(eq(sourceAccountId));
+            then(sourceAccount).should().withdraw(eq(money), eq(targetAccountId));
+            then(accountLock).should().releaseAccount(eq(sourceAccountId));
+
+            then(accountLock).should().lockAccount(eq(targetAccountId));
+            then(targetAccount).should().deposit(eq(money), eq(sourceAccountId));
+            then(accountLock).should().releaseAccount(eq(targetAccountId));
+
+            thenAccountsHaveBeenUpdated(sourceAccountId, targetAccountId);
+
+        }
+
         //==헬퍼 메서드==//
+        private void thenAccountsHaveBeenUpdated(AccountId... accountIds) {
+            ArgumentCaptor<Account> accountCaptor = ArgumentCaptor.forClass(Account.class);
+            then(updateAccountStatePort).should(times(accountIds.length)).updateActivities(accountCaptor.capture());
+
+            List<AccountId> updateAccountIds = accountCaptor.getAllValues()
+                .stream()
+                .map(Account::getId)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+
+            for (AccountId accountId : accountIds) {
+                assertThat(updateAccountIds).contains(accountId);
+            }
+        }
+
         private void givenDepositWillSucceed(Account account) {
             given(account.deposit(any(Money.class), any(AccountId.class))).willReturn(true);
+        }
+
+        private void givenWithdrawalWithSucceed(Account account) {
+            given(account.withdraw(any(Money.class), any(AccountId.class))).willReturn(true);
         }
 
         private void givenWithdrawalWillFail(Account account) {
