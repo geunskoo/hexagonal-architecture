@@ -27,7 +27,7 @@ public record Money(@NonNull BigInteger amount) {
         return new Money(money1.amount.add(money2.amount));
     }
 
-    public static Money substract(Money money1, Money money2) {
+    public static Money subtract(Money money1, Money money2) {
         return new Money(money1.amount.subtract(money2.amount));
     }
 
